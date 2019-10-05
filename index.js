@@ -16,11 +16,21 @@ App.use(cors());
 
 App.get('/api',(req,res)=>{
   const user = req.query.name || 'lol'
+  const arrayOfName = [];
+  
   axios.get('http://interviewtest.replicon.com/employees/')
   .then(response =>{
-    res.json(response.data);
-    console.log(response.data.name)
+    // res.json(arrayOfName);
+    const data = response.data;
+    for(let key of data ){
+      arrayOfName.push(key.name)
+    }
+    console.log(arrayOfName);
+    res.json(arrayOfName);
+  
+    
   })
+  
 });
 
 if(process.env.NODE_ENV ==='production'){
