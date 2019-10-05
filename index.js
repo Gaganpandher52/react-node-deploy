@@ -19,6 +19,7 @@ App.get('/api',(req,res)=>{
   axios.get('http://interviewtest.replicon.com/employees/')
   .then(response =>{
     res.json(response.data);
+    console.log(response.data.name)
   })
 });
 
