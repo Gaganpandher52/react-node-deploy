@@ -23,7 +23,7 @@ App.get('/api',(req,res)=>{
 });
 
 if(process.env.NODE_ENV ==='production'){
-  App.use(express.static('client/build'));
+  App.use(Express.static('client/build'));
   App.get('*',(req,res)=>{
     res.sendFile(path.resolve(__dirname,'client','build','index.html'))
   })
