@@ -25,13 +25,13 @@ class Employees extends Component {
   }
   dosomething = () => (
     <div>
-        {this.state.employees.length ? <ul>
+        {this.state.employees.length ? <ol>
           {this.state.employees.map((employee,i)=>
             <li key={i}>
-              {employee}<button style={{marginLeft:'15px'}}>Check schdule</button>
+              {employee}<button style={{marginLeft:'15px'}}>Check schedule</button>
             </li>
           )}
-        </ul>: <p>No employees</p>}
+        </ol>: <p>No employees</p>}
       </div>
   );
   dosomethingelse = () => {

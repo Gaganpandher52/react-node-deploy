@@ -17,21 +17,46 @@ App.use(cors());
 App.get('/api',(req,res)=>{
   const user = req.query.name || 'lol'
   const arrayOfName = [];
+  const schedule = [
+    {'week':23,
+     'schedule':[
+
+     
+        {'employee_id':1,
+        'schedule':[]
+        },
+      ]
+    }
+  ] 
   
   axios.get('http://interviewtest.replicon.com/employees/')
   .then(response =>{
     // res.json(arrayOfName);
-    const data = response.data;
+    const data = response.data;//array of objects
     for(let key of data ){
       arrayOfName.push(key.name)
     }
-    console.log(arrayOfName);
+    console.log(data);
+    // console.log(data);
     res.json(arrayOfName);
-  
-    
   })
-  
 });
+ 
+App.get('/api',(req,res)=>{
+  const arrayOfName = [];
+
+  axios.get('http://interviewtest.replicon.com/time-off/requests')
+  .then(response =>{
+    // res.json(arrayOfName);
+    const data2 = response.data;
+    // for(let key of data ){
+    //   arrayOfName.push(key.name)
+    // }
+    console.log(data2);
+    // res.json(arrayOfName);
+  })
+});
+
 
 if(process.env.NODE_ENV ==='production'){
   App.use(Express.static('client/build'));
