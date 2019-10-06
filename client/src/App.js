@@ -2,18 +2,19 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios'
-import Navbar from './components/navbar'
+import NewNavbar from './components/navbar'
+import Employees from './components/Employees'
 
 
 function App() {
 
-  const [user, setUser] = React.useState(null);
+  // const [user, setUser] = React.useState(null);
 
-  React.useEffect(() =>{
-    axios.get('/api').then(response =>{
-        setUser(response.data)
-      }) 
-  },[])
+  // React.useEffect(() =>{
+  //   axios.get('/api').then(response =>{
+  //       setUser(response.data)
+  //     }) 
+  // },[])
 
 
  
@@ -21,12 +22,13 @@ function App() {
      (
     <div className="App">
       <header className="App-header">
-        
-        <p>
-          {JSON.stringify(user)}
-        </p>
+        <NewNavbar/>
+        <Employees/>
         
       </header>
+      <p>
+          {/* {JSON.stringify(user)} */}
+        </p>
     </div>
   ));
 }

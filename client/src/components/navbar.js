@@ -1,29 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
 import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar'
 
-class Navbar extends Component {
-  render() {
-    return (
-      <div>
-        <Nav
-          activeKey="/home"
-          onSelect={selectedKey => alert(`selected ${selectedKey}`)}
-        >
-          <Nav.Item>
-            <Nav.Link href="/home">Active</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-1">Link</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-2">Link</Nav.Link>
-          </Nav.Item>
-          
-        </Nav>
-        
-      </div>
-    );
-  }
-}
+const NewNavbar = () => {
+  
+  return (
+    <div>
+      <p style={{
+        color:'blue',
+        marginTop:'10px',
+        marginRight:'1100px'
+      }}>
+        Scheduling App
+      </p>
+      
+    </div>
+  );
+};
 
-export default Navbar;
+export default NewNavbar;
