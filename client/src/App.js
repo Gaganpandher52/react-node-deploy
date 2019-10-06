@@ -23,9 +23,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <NewNavbar/>
-        <Employees/>
-        
       </header>
+      <Employees/>
       <p>
           {/* {JSON.stringify(user)} */}
         </p>
