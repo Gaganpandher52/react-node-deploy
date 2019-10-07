@@ -18,17 +18,27 @@ function generateSchedule(){
   //     val++;
   //   }
 
+  for(let j =0;j<totalWeeks;j++){
 
-  let employeePerShift = [0,0,0,0,0,0,0];
+    let employeePerShift = [0,0,0,0,0,0,0];
     for(let i =0;i <employeeData.length;i++){
       let eachEmployeeSchedule = {
         'employee_id':null,
         'schedule':[]
       }
-      let request = requestForEmployee
+      let request = requestForEmployee(23+j,w);
+
+      if(request.length > 0){
+        for(let k=1; k <8;k++){
+          if(employeePerShift[l-1] < EMPLOYEE_PER_SHIFT ){
+            
+          }
+        }
+      }
       
       
     }
+  }
 
   
 
@@ -95,6 +105,31 @@ function requestForEmployee(week, employee){
     }
   }
   return requestNeeded;
+}
+
+function requestPerDay(list,day){
+  let isThere = false;
+
+  if(list.length > 1){
+    for(let i=0; i< list.length;i++){
+      for(let j=0; timeOffData[list[i]].days.length;i++){
+        if(timeOffData[list[i]].days[j] === day){
+          isThere = true;
+        }
+      }
+    }
+  }
+  else{
+    let index = list[0];
+    for(let k=0;i<timeOffData[index].days.length;i++){
+      if(timeOffData[index].days[i] === day){
+        isThere = true;
+      }
+    }
+  }
+  return isThere;
+
+
 }
 
 
