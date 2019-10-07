@@ -16,12 +16,15 @@ App.get('/api',(req,res)=>{
   const arrayOfName = [];
   axios.all([
     axios.get('http://interviewtest.replicon.com/employees/'),
-    axios.get('http://interviewtest.replicon.com/time-off/requests/')
+    axios.get('http://interviewtest.replicon.com/time-off/requests/'),
+    axios.get('http://interviewtest.replicon.com/shift-rules/')
+
   ])
   .then(responseArr => {
     //this will be executed only when all requests are complete
     const allEmployees = responseArr[0].data;//array of objects
-    const allTimeOffs = responseArr[1].data
+    const allTimeOffs = responseArr[1].data;
+    const allShiftData = responseArr[2].data;
     for(let key of allEmployees ){
       arrayOfName.push(key.name)
     }
@@ -33,6 +36,12 @@ App.get('/api',(req,res)=>{
       console.log("The file was saved!");
     });
     fs.writeFile("./apiData/timeOffs.json", JSON.stringify(allTimeOffs), function(err) {
+      if(err) {
+          return console.log(err);
+      } 
+      console.log("The file was saved!");
+    });
+    fs.writeFile("./apiData/ruleData.json", JSON.stringify(allShiftData), function(err) {
       if(err) {
           return console.log(err);
       } 
