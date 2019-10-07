@@ -3,16 +3,10 @@ const App = Express();
 const cors = require('cors');
 const axios = require('axios');
 const PORT = process.env.PORT || 8080;
-let json = require('./schedule.json');
-// console.log(json)
-// Express Configuration
-// App.use(BodyParser.urlencoded({ extended: false }));
-// App.use(Express.static('public'));
+const request = require('request')
+const fs = require('fs');
+const employees = require('./apiData/employees.js');
 
-// // Sample GET route
-// App.get('/api/data', (req, res) => res.json({
-//   message: "Seems to work!", 
-// }));
 function randGenerator(){
   // let value = 0
   let i =1;
@@ -63,14 +57,9 @@ App.get('/api',(req,res)=>{
       is++;
     }
   }
-  // console.log(schedule[0].schedules[0].schedule);
-  // console.log(schedule[0].schedules[1].schedule);
-  // console.log(schedule)
-  console.log(schedule[0].schedules)
-
   axios.all([
     axios.get('http://interviewtest.replicon.com/employees/'),
-    axios.get('http://interviewtest.replicon.com/weeks/')
+    axios.get('http://interviewtest.replicon.com/time-off/requests/')
   ])
   .then(responseArr => {
     //this will be executed only when all requests are complete
@@ -79,9 +68,19 @@ App.get('/api',(req,res)=>{
       arrayOfName.push(key.name)
     }
     res.json(arrayOfName);
-    // console.log(responseArr[0].data);
-    // console.log(responseArr[1].data);
-
+    fs.writeFile("./apiData/employees.json", JSON.stringify(responseArr[0].data), function(err) {
+      if(err) {
+          return console.log(err);
+      } 
+      console.log("The file was saved!");
+    });
+    fs.writeFile("./apiData/timeOffs.json", JSON.stringify(responseArr[1].data), function(err) {
+      if(err) {
+          return console.log(err);
+      } 
+      console.log("The file was saved!");
+    });
+    
   });
   
   
@@ -98,24 +97,30 @@ App.get('/api',(req,res)=>{
   // })
 });
  
-App.get('/api2.0',(req,res)=>{
-  const arrayOfName = [];
+// App.get('/api2.0',(req,res)=>{
+//   const arrayOfName = [];
 
-  axios.get('http://interviewtest.replicon.com/time-off/requests')
-  .then(response =>{
-    // res.json(arrayOfName);
-    const data2 = response.data;
-    let employee_id = [];
-    // for(let key of data ){
-    //   arrayOfName.push(key.name)
-    // }
-    for(let key of data2 ){
-      employee_id.push(key.employee_id)
-    }
-    // console.log(employee_id);
-    res.json(employee_id);
-  })
-});
+//   axios.get('http://interviewtest.replicon.com/time-off/requests')
+//   .then(response =>{
+     
+//     const data2 = response.data;
+//     let employee_id = [];
+//     for(let key of data2 ){
+//       employee_id.push(key.employee_id)
+//     }
+//     res.json(employee_id);
+//     // data2.pipe(fs.createWriteStream("./apiData/employees.json"));
+//     fs.writeFile("./apiData/employees.json", JSON.stringify(data2), function(err) {
+
+//       if(err) {
+//           return console.log(err);
+//       }
+  
+//       console.log("The file was saved!");
+//   });
+//   }) 
+  
+// });
 
 
 if(process.env.NODE_ENV ==='production'){
@@ -129,3 +134,4 @@ App.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Express seems to be listening on port ${PORT} so that's pretty good 👍`);
 });
+
