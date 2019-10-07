@@ -2,9 +2,23 @@ const request = require('request')
 const fs = require('fs');
 
 function generateSchedule(){
-  const schedule = [] ;
+  let eachWeekSchedule = [];
   const EMPLOYEE_PER_SHIFT = readFromRules();
-    let is = 1;
+  const totalWeeks = 4;
+  let val = 0;
+
+  
+    while(val < 4){
+      let obj ={
+        'week':23+val,
+        'schedules':[]
+      }
+      eachWeekSchedule.push(obj)
+      val++;
+    }
+  
+
+    // let is = 1;
     // for(let i = 0;i < schedule.length;i++){
     //   while(is <=5 ){
     //     let obj = {'employee_id':is,
@@ -20,7 +34,7 @@ function generateSchedule(){
 
 
 
-    return schedule;
+    return eachWeekSchedule;
 }
 
 fs.writeFile("./apiData/schedule.json", JSON.stringify(generateSchedule()), function(err) {
@@ -38,10 +52,8 @@ function readFromRules(){
     if(dataHere[i].rule_id === 7){
       value = dataHere[i].value
     }
-    
   }
 }
-console.log(readFromRules())
 
 
 
