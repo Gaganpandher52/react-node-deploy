@@ -28,6 +28,13 @@ function generateSchedule(){
     return schedule;
 }
 
+fs.writeFile("./apiData/schedule.json", JSON.stringify(generateSchedule()), function(err) {
+  if(err) {
+      return console.log(err);
+  } 
+  console.log("The file was saved!");
+});
+
 
 
 // const schedule = [
@@ -75,3 +82,5 @@ function generateSchedule(){
   //     // return arrayOfShifts[Math.floor(Math.random()*arrayOfShifts.length)]
   //     return value;
   // }
+
+  module.exports = generateSchedule();

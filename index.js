@@ -5,7 +5,9 @@ const axios = require('axios');
 const PORT = process.env.PORT || 8080;
 const request = require('request')
 const fs = require('fs');
-const employees = require('./apiData/employees.js');
+const solutionSchedule = require('./apiData/employees.js');
+
+console.log(solutionSchedule)
 
 App.use(cors());
 
