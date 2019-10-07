@@ -14,14 +14,15 @@ let json = require('./schedule.json');
 //   message: "Seems to work!", 
 // }));
 function randGenerator(){
-  let value = 0
-  let i =7;
+  // let value = 0
+  let i =1;
   let arrayOfShifts = [1,1,2,2,3,3,4,4,5,5,6,6,7,7];//two employees per day
-  while(i >=7){
-    value  = Array.from({length: 2}, () => Math.ceil(Math.random() * 7));
-    i--;
+  while(i <7){
+    value  = Array.from({length: Math.ceil(Math.random()*3)}, () => Math.ceil(Math.random() * arrayOfShifts[Math.floor(Math.random()*arrayOfShifts.length)]));
+    i++;
   } 
-    return arrayOfShifts[Math.floor(Math.random()*arrayOfShifts.length)];
+    // return arrayOfShifts[Math.floor(Math.random()*arrayOfShifts.length)]
+    return value;
 
 }
 console.log(randGenerator())
@@ -33,26 +34,39 @@ App.get('/api',(req,res)=>{
   const schedule = [
     {'week':23,
      'schedules':[
-        {'employee_id':1,
-        'schedule':[]
-        },
-        {'employee_id':2,
-         'schedule':[2]
-        }
+        
+      ]
+    },
+    {'week':24,
+     'schedules':[
+        
+      ]
+    },
+    {'week':25,
+     'schedules':[
+        
+      ]
+    },
+    {'week':2,
+     'schedules':[
+        
       ]
     }
   ];
   // console.log(schedule[0].schedules[0].schedule) 
-  let is = 0;
+  let is = 1;
   for(let i = 0;i < schedule.length;i++){
-    while(is < 3){
-      schedule[i].schedules[i].schedule.push(randGenerator());
+    while(is <=5 ){
+      let obj = {'employee_id':is,
+                'schedule':randGenerator()}
+      schedule[i].schedules.push(obj)
       is++;
     }
   }
-  console.log(schedule[0].schedules[0].schedule);
-  console.log(schedule[0].schedules[1].schedule);
-  console.log(schedule)
+  // console.log(schedule[0].schedules[0].schedule);
+  // console.log(schedule[0].schedules[1].schedule);
+  // console.log(schedule)
+  console.log(schedule[0].schedules)
 
   axios.all([
     axios.get('http://interviewtest.replicon.com/employees/'),
@@ -65,8 +79,8 @@ App.get('/api',(req,res)=>{
       arrayOfName.push(key.name)
     }
     res.json(arrayOfName);
-    console.log(responseArr[0].data);
-    console.log(responseArr[1].data);
+    // console.log(responseArr[0].data);
+    // console.log(responseArr[1].data);
 
   });
   
@@ -84,20 +98,24 @@ App.get('/api',(req,res)=>{
   // })
 });
  
-// App.get('/api',(req,res)=>{
-//   const arrayOfName = [];
+App.get('/api2.0',(req,res)=>{
+  const arrayOfName = [];
 
-//   axios.get('http://interviewtest.replicon.com/time-off/requests')
-//   .then(response =>{
-//     // res.json(arrayOfName);
-//     const data2 = response.data;
-//     // for(let key of data ){
-//     //   arrayOfName.push(key.name)
-//     // }
-//     console.log(data2);
-//     // res.json(arrayOfName);
-//   })
-// });
+  axios.get('http://interviewtest.replicon.com/time-off/requests')
+  .then(response =>{
+    // res.json(arrayOfName);
+    const data2 = response.data;
+    let employee_id = [];
+    // for(let key of data ){
+    //   arrayOfName.push(key.name)
+    // }
+    for(let key of data2 ){
+      employee_id.push(key.employee_id)
+    }
+    // console.log(employee_id);
+    res.json(employee_id);
+  })
+});
 
 
 if(process.env.NODE_ENV ==='production'){
