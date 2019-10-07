@@ -4,18 +4,37 @@ const fs = require('fs');
 function generateSchedule(){
   let eachWeekSchedule = [];
   const EMPLOYEE_PER_SHIFT = readFromRules();
+  const employeeData = readFromEmployees();
+  const timeOffData = readFromTimeoffs();
+  
   const totalWeeks = 4;
-  let val = 0;
+  // let val = 0;
+  //   while(val < totalWeeks){
+  //     let obj = { 
+  //       'week':23+val,
+  //       'schedules':[]
+  //     }
+      
+  //     val++;
+  //   }
+
+
+  let employeePerShift = [0,0,0,0,0,0,0];
+    for(let i =0;i <employeeData.length;i++){
+      let eachEmployeeSchedule = {
+        'employee_id':null,
+        'schedule':[]
+      }
+      let request = requestForEmployee
+      
+      
+    }
 
   
-    while(val < 4){
-      let obj ={
-        'week':23+val,
-        'schedules':[]
-      }
-      eachWeekSchedule.push(obj)
-      val++;
-    }
+
+
+
+
   
 
     // let is = 1;
@@ -53,6 +72,29 @@ function readFromRules(){
       value = dataHere[i].value
     }
   }
+  return value;
+}
+
+//helper function
+function readFromEmployees(){
+  let dataHere = JSON.parse(fs.readFileSync("./apiData/employees.json"));
+  return dataHere;
+}
+
+function readFromTimeoffs(){
+  let dataHere = JSON.parse(fs.readFileSync("./apiData/timeOffs.json"));
+  return dataHere;
+}
+
+function requestForEmployee(week, employee){
+  let requestNeeded = [];
+
+  for(let i =0;i< timeOffData.length;i++){
+    if(timeOffData[i].week === week && timeOffData[i].employee_id=== employeeData[employee].id){
+      requestNeeded.push(i);
+    }
+  }
+  return requestNeeded;
 }
 
 
