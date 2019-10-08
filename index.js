@@ -1,3 +1,4 @@
+//Created by Gaganpreet Pandher
 const Express = require('express');
 const App = Express();
 const cors = require('cors');
@@ -10,6 +11,14 @@ const solutionSchedule = require('./apiData/employees.js');
 console.log(JSON.stringify(solutionSchedule))
 
 App.use(cors());
+
+App.get('/solution',(req,res)=>{
+  let array = [];
+  for(let key of solutionSchedule ){
+    array.push(key.schedules)
+  }
+  res.send(array);
+});
 
 App.get('/api',(req,res)=>{
 
@@ -50,7 +59,6 @@ App.get('/api',(req,res)=>{
     
   });
 });
-
 
   const name= 'GaganpreetPandher';
   const email='gaganpandher52@gmail.com';

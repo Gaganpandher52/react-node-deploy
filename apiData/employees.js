@@ -1,7 +1,5 @@
 const request = require('request')
 const fs = require('fs');
-
-
 const timeOffData = readFromTimeoffs();
 const employeeData = readFromEmployees();
 const allShiftData = readFromRules();
