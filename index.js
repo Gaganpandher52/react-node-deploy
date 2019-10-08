@@ -51,6 +51,22 @@ App.get('/api',(req,res)=>{
   });
 });
 
+
+  const name= 'GaganpreetPandher';
+  const email='gaganpandher52@gmail.com';
+  const features ='&features[]=1&features[]=2'
+  axios({
+    method: 'post',
+    url: 'http://interviewtest.replicon.com/submit?name='+name +'&email='+email+features+'&solution=false',
+    data: solutionSchedule,
+    header:{
+      "content-type": "application/json"
+    }
+  })
+  .then(function (response) {
+    console.log(response);
+  });
+
 if(process.env.NODE_ENV ==='production'){
   App.use(Express.static('client/build'));
   App.get('*',(req,res)=>{
