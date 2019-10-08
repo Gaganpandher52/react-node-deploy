@@ -22,8 +22,9 @@ function generateSchedule(){
 
       //used for employee per shift tracking 
       employeePerShift = [0,0,0,0,0,0,0];
-      for(let i =0;i <employeeData.length;i++){
-        //initialize the schedule obj
+      //check for each employee if they can work for any given day of the week
+      for(let i =0;i < employeeData.length;i++){
+        //initialize a new eachEmployeeSchedule object
         eachEmployeeSchedule = {
           'employee_id':null,
           'schedule':[]
@@ -31,7 +32,9 @@ function generateSchedule(){
         let request = requestForEmployee(23+j,i);
         //if no time off for today, schdedule for that day
         if(request.length > 0){
+          //keeps track of the days employee work
           for(let k=1; k < 8;k++){
+            //if not enough employees assign using rule
             if(employeePerShift[k-1] < EMPLOYEE_PER_SHIFT ){
               if(!requestPerDay(request,k)){
                 eachEmployeeSchedule.employee_id = employeeData[i].id;
@@ -44,6 +47,7 @@ function generateSchedule(){
             eachWeekSchedule.schedules.push(eachEmployeeSchedule);
           }
         }//if
+        //or schedule for every day
         else{
           for(let k=1; k < 8;k++){
             if(employeePerShift[k-1] < EMPLOYEE_PER_SHIFT){
@@ -57,6 +61,7 @@ function generateSchedule(){
           }
         }
       }
+      //added to final schedule
       mainSchedule.push(eachWeekSchedule);
       return mainSchedule;
     }  
