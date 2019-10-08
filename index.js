@@ -6,9 +6,9 @@ const axios = require('axios');
 const PORT = process.env.PORT || 8080;
 const request = require('request')
 const fs = require('fs');
-const solutionSchedule = require('./apiData/employees.js');
+let solutionSchedule = JSON.parse(fs.readFileSync("./apiData/schedule.json"));//final solution
 
-console.log(JSON.stringify(solutionSchedule))
+console.log(JSON.stringify(solutionSchedule));
 
 App.use(cors());
 

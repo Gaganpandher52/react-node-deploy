@@ -128,4 +128,3 @@ function requestPerDay(list,day){
   return isThere;
 }
   
-module.exports = generateSchedule();
