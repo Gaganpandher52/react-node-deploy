@@ -64,7 +64,7 @@ App.get('/api',(req,res)=>{
   const features ='&features[]=1&features[]=2'
   axios({
     method: 'post',
-    url: 'http://interviewtest.replicon.com/submit?name='+name +'&email='+email+features+'&solution=false',
+    url: 'http://interviewtest.replicon.com/submit?name='+name +'&email='+email+features+'&solution=true',
     data: solutionSchedule,
     header:{
       "content-type": "application/json"
