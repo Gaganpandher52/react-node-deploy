@@ -1,70 +1,67 @@
 const request = require('request')
 const fs = require('fs');
 
+
+const timeOffData = readFromTimeoffs();
+const employeeData = readFromEmployees();
+const allShiftData = readFromRules();
+
+
 function generateSchedule(){
-  let eachWeekSchedule = [];
-  const EMPLOYEE_PER_SHIFT = readFromRules();
-  const employeeData = readFromEmployees();
-  const timeOffData = readFromTimeoffs();
+  let eachWeekSchedule;
+  let employeePerShift;
+  let mainSchedule = [];
+  const EMPLOYEE_PER_SHIFT = 2;
   
-  const totalWeeks = 4;
-  // let val = 0;
-  //   while(val < totalWeeks){
-  //     let obj = { 
-  //       'week':23+val,
-  //       'schedules':[]
-  //     }
-      
-  //     val++;
-  //   }
-
-  for(let j =0;j<totalWeeks;j++){
-
-    let employeePerShift = [0,0,0,0,0,0,0];
-    for(let i =0;i <employeeData.length;i++){
-      let eachEmployeeSchedule = {
-        'employee_id':null,
-        'schedule':[]
+  let j = 0;
+  for(let j=0;j<4;j++){
+    
+    // while(j <= 4){
+      eachWeekSchedule = {
+        'week':23+j,
+        'schedules':[]
       }
-      let request = requestForEmployee(23+j,w);
-
-      if(request.length > 0){
-        for(let k=1; k <8;k++){
-          if(employeePerShift[l-1] < EMPLOYEE_PER_SHIFT ){
-            
+      employeePerShift = [0,0,0,0,0,0,0];
+      for(let i =0;i <employeeData.length;i++){
+        let eachEmployeeSchedule = {
+          'employee_id':null,
+          'schedule':[]
+        }
+        let request = requestForEmployee(23+j,i);
+  
+        if(request.length > 0){
+          for(let k=1; k <8;k++){
+            if(employeePerShift[k-1] < EMPLOYEE_PER_SHIFT ){
+              if(!requestPerDay(request,k)){
+                eachEmployeeSchedule.employee_id = employeeData[i].id;
+                eachEmployeeSchedule.schedule.push(k);
+                employeePerShift[k-1] = employeePerShift[k-1] + 1;
+              } 
+            }
+          }
+          if(eachEmployeeSchedule.employee_id !=null){
+            eachWeekSchedule.schedules.push(eachEmployeeSchedule);
+          }
+        }//if
+        else{
+          for(let k=1; k < 8;k++){
+            if(employeePerShift[k-1] <EMPLOYEE_PER_SHIFT){
+              eachEmployeeSchedule.employee_id = employeeData[i].id
+              eachEmployeeSchedule.schedule.push(k);
+              employeePerShift[k-1] = employeePerShift[k-1] + 1;
+            }
+          }
+          if(eachEmployeeSchedule.employee_id != null){
+            eachWeekSchedule.schedules.push(eachEmployeeSchedule);
           }
         }
       }
-      
-      
-    }
-  }
-
-  
-
-
-
-
-  
-
-    // let is = 1;
-    // for(let i = 0;i < schedule.length;i++){
-    //   while(is <=5 ){
-    //     let obj = {'employee_id':is,
-    //               'schedule':randGenerator()}
-    //     schedule[i].schedules.push(obj)
-    //     is++;
-    //   }
-    // }
-
-
-
-
-
-
-
-    return eachWeekSchedule;
+      mainSchedule.push(eachWeekSchedule);
+      // j++;
+      return mainSchedule;
+    }  
 }
+
 
 fs.writeFile("./apiData/schedule.json", JSON.stringify(generateSchedule()), function(err) {
   if(err) {
@@ -72,7 +69,7 @@ fs.writeFile("./apiData/schedule.json", JSON.stringify(generateSchedule()), func
   } 
   console.log("The file was saved!");
 });
-
+//*********************** helper functions ***************************//
 //this function read the file to check for the rules of EMPLOYEE_PER_SHIFT
 function readFromRules(){
   let dataHere = JSON.parse(fs.readFileSync("./apiData/ruleData.json"));
@@ -85,7 +82,7 @@ function readFromRules(){
   return value;
 }
 
-//helper function
+//**** helper functions
 function readFromEmployees(){
   let dataHere = JSON.parse(fs.readFileSync("./apiData/employees.json"));
   return dataHere;
@@ -112,7 +109,7 @@ function requestPerDay(list,day){
 
   if(list.length > 1){
     for(let i=0; i< list.length;i++){
-      for(let j=0; timeOffData[list[i]].days.length;i++){
+      for(let j=0; timeOffData[list[i]].days.length;j++){
         if(timeOffData[list[i]].days[j] === day){
           isThere = true;
         }
@@ -121,63 +118,13 @@ function requestPerDay(list,day){
   }
   else{
     let index = list[0];
-    for(let k=0;i<timeOffData[index].days.length;i++){
-      if(timeOffData[index].days[i] === day){
+    for(let k=0;k<timeOffData[index].days.length;k++){
+      if(timeOffData[index].days[k] === day){
         isThere = true;
       }
     }
   }
   return isThere;
-
-
 }
-
-
-
-// const schedule = [
-  //   {'week':23,
-  //    'schedules':[
-        
-  //     ]
-  //   },
-  //   {'week':24,
-  //    'schedules':[
-        
-  //     ]
-  //   },
-  //   {'week':25,
-  //    'schedules':[
-        
-  //     ]
-  //   },
-  //   {'week':2,
-  //    'schedules':[
-        
-  //     ]
-  //   }
-  // ];
-  // console.log(schedule[0].schedules[0].schedule) 
-  // let is = 1;
-  // for(let i = 0;i < schedule.length;i++){
-  //   while(is <=5 ){
-  //     let obj = {'employee_id':is,
-  //               'schedule':randGenerator()}
-  //     schedule[i].schedules.push(obj)
-  //     is++;
-  //   }
-  // }
-
-
-  function randGenerator(){
-    // let value = 0
-    let i =1;
-    let arrayOfShifts = [1,1,2,2,3,3,4,4,5,5,6,6,7,7];//two employees per day
-    while(i <7){
-      value  = Array.from({length: Math.ceil(Math.random()*3)}, () => Math.ceil(Math.random() * arrayOfShifts[Math.floor(Math.random()*arrayOfShifts.length)]));
-      i++;
-    } 
-      // return arrayOfShifts[Math.floor(Math.random()*arrayOfShifts.length)]
-      return value;
-  }
-
-  module.exports = generateSchedule();
+  
+module.exports = generateSchedule();
