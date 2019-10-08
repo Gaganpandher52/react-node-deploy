@@ -13,10 +13,6 @@ console.log(JSON.stringify(solutionSchedule))
 App.use(cors());
 
 App.get('/solution',(req,res)=>{
-  let array = [];
-  // for(let key of solutionSchedule ){
-  //   array.push(key.schedules)
-  // }
   res.send(solutionSchedule);
 });
 
@@ -24,6 +20,7 @@ App.get('/solution',(req,res)=>{
 App.get('/api',(req,res)=>{
 
   const arrayOfName = [];
+  //all fetch requests
   axios.all([
     axios.get('http://interviewtest.replicon.com/employees/'),
     axios.get('http://interviewtest.replicon.com/time-off/requests/'),
@@ -39,6 +36,7 @@ App.get('/api',(req,res)=>{
       arrayOfName.push(key.name)
     }
     res.json(arrayOfName);
+    /*writing to json data files*/
     fs.writeFile("./apiData/employees.json", JSON.stringify(allEmployees), function(err) {
       if(err) {
           return console.log(err);
@@ -60,7 +58,7 @@ App.get('/api',(req,res)=>{
     
   });
 });
-
+  //********** sending a POST request for the submission */
   const name= 'GaganpreetPandher';
   const email='gaganpandher52@gmail.com';
   const features ='&features[]=1&features[]=2'

@@ -1,3 +1,4 @@
+//Created by Gaganpreet Pandher
 const request = require('request')
 const fs = require('fs');
 const timeOffData = readFromTimeoffs();
@@ -11,11 +12,9 @@ let eachWeekSchedule;
 //main logic of feature 1 & feature 2
 function generateSchedule(){
   
-  const EMPLOYEE_PER_SHIFT = 2;
+  const EMPLOYEE_PER_SHIFT = readFromRules();
   
-  // let j = 0;
   for(let j=0;j<4;j++){
-    // while(j <= 4){
       eachWeekSchedule = {
         'week':23+j,
         'schedules':[]
