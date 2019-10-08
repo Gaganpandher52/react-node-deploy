@@ -14,11 +14,12 @@ App.use(cors());
 
 App.get('/solution',(req,res)=>{
   let array = [];
-  for(let key of solutionSchedule ){
-    array.push(key.schedules)
-  }
-  res.send(array);
+  // for(let key of solutionSchedule ){
+  //   array.push(key.schedules)
+  // }
+  res.send(solutionSchedule);
 });
+
 
 App.get('/api',(req,res)=>{
 

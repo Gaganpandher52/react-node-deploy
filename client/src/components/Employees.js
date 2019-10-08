@@ -5,7 +5,7 @@ class Employees extends Component {
   
   state = {
     employees:[],
-    id:[],
+    id:[1,2,3,4,5],
   }
 
   componentDidMount() {
@@ -30,13 +30,13 @@ class Employees extends Component {
   dosomething = () => (
     <div>
         {/* prints out employee name using map */}
-        {this.state.employees.length ? <ol>
+        {this.state.employees.length ? <ul>
           {this.state.employees.map((employee,i)=>
             <li key={i}>
-              {employee}<button style={{marginLeft:'15px',}}>Check schedule</button>
+              {employee} - <span style={{textAlign:'justify'}}>Id number: {this.state.id[i]}</span>
             </li>
           )}
-        </ol>: <p>No employees</p>}
+        </ul>: <p></p>}
       </div>
   );
   render() {

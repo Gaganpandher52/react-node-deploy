@@ -4,8 +4,6 @@ import './App.css';
 import axios from 'axios'
 import NewNavbar from './components/navbar'
 import Employees from './components/Employees'
-import Scheduleinfo from './components/ScheduleInfo'
-
 
 function App() {
   return (
@@ -15,7 +13,6 @@ function App() {
         <NewNavbar/>
       </header>
         <Employees/>
-        <Scheduleinfo/>
     </div>
   ));
 }
