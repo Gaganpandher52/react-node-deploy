@@ -5,32 +5,36 @@ const fs = require('fs');
 const timeOffData = readFromTimeoffs();
 const employeeData = readFromEmployees();
 const allShiftData = readFromRules();
+let mainSchedule = [];
+let employeePerShift;
+let eachEmployeeSchedule;
+let eachWeekSchedule;
 
-
+//main logic of feature 1 & feature 2
 function generateSchedule(){
-  let eachWeekSchedule;
-  let employeePerShift;
-  let mainSchedule = [];
+  
   const EMPLOYEE_PER_SHIFT = 2;
   
-  let j = 0;
+  // let j = 0;
   for(let j=0;j<4;j++){
-    
     // while(j <= 4){
       eachWeekSchedule = {
         'week':23+j,
         'schedules':[]
       }
+
+      //used for employee per shift tracking 
       employeePerShift = [0,0,0,0,0,0,0];
       for(let i =0;i <employeeData.length;i++){
-        let eachEmployeeSchedule = {
+        //initialize the schedule obj
+        eachEmployeeSchedule = {
           'employee_id':null,
           'schedule':[]
         }
         let request = requestForEmployee(23+j,i);
-  
+        //if no time off for today, schdedule for that day
         if(request.length > 0){
-          for(let k=1; k <8;k++){
+          for(let k=1; k < 8;k++){
             if(employeePerShift[k-1] < EMPLOYEE_PER_SHIFT ){
               if(!requestPerDay(request,k)){
                 eachEmployeeSchedule.employee_id = employeeData[i].id;
@@ -45,7 +49,7 @@ function generateSchedule(){
         }//if
         else{
           for(let k=1; k < 8;k++){
-            if(employeePerShift[k-1] <EMPLOYEE_PER_SHIFT){
+            if(employeePerShift[k-1] < EMPLOYEE_PER_SHIFT){
               eachEmployeeSchedule.employee_id = employeeData[i].id
               eachEmployeeSchedule.schedule.push(k);
               employeePerShift[k-1] = employeePerShift[k-1] + 1;
@@ -57,13 +61,12 @@ function generateSchedule(){
         }
       }
       mainSchedule.push(eachWeekSchedule);
-      // j++;
       return mainSchedule;
     }  
-}
+};
 
 
-fs.writeFile("./apiData/schedule.json", JSON.stringify(generateSchedule()), function(err) {
+fs.writeFile("./apiData/schedule.json", JSON.stringify(generateSchedule(),null,2), function(err) {
   if(err) {
       return console.log(err);
   } 
@@ -93,11 +96,12 @@ function readFromTimeoffs(){
   return dataHere;
 }
 
+//helper function check for time off 
 function requestForEmployee(week, employee){
   let requestNeeded = [];
 
   for(let i =0;i< timeOffData.length;i++){
-    if(timeOffData[i].week === week && timeOffData[i].employee_id=== employeeData[employee].id){
+    if(timeOffData[i].week === week && timeOffData[i].employee_id === employeeData[employee].id){
       requestNeeded.push(i);
     }
   }

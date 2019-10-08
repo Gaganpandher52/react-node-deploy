@@ -7,7 +7,7 @@ const request = require('request')
 const fs = require('fs');
 const solutionSchedule = require('./apiData/employees.js');
 
-console.log(solutionSchedule)
+console.log(JSON.stringify(solutionSchedule))
 
 App.use(cors());
 
